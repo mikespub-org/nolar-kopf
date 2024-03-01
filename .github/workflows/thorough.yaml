@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: pre-commit run --all-files
       - run: mypy kopf --strict
@@ -42,10 +42,10 @@ jobs:
       fail-fast: false
       matrix:
         install-extras: [ "", "full-auth" ]
-        python-version: [ "3.8", "3.9", "3.10", "3.11" ]
+        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
         include:
           - install-extras: "uvloop"
-            python-version: "3.11"
+            python-version: "3.12"
     name: Python ${{ matrix.python-version }} ${{ matrix.install-extras }}
     runs-on: ubuntu-22.04
     timeout-minutes: 5  # usually 2-3 mins
@@ -107,7 +107,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k3s: [latest, v1.27, v1.26, v1.25]
+        k3s: [latest, v1.28, v1.27, v1.26]
     name: K3s ${{matrix.k3s}}
     runs-on: ubuntu-22.04
     timeout-minutes: 10  # usually 4-5 mins
@@ -115,7 +115,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - uses: nolar/setup-k3d-k3s@v1
         with:
           version: ${{ matrix.k3s }}
@@ -127,7 +127,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s: [latest, v1.27.6, v1.26.9, v1.25.14]
+        k8s: [latest, v1.28.5, v1.27.9, v1.26.13]
     name: K8s ${{matrix.k8s}}
     runs-on: ubuntu-22.04
     timeout-minutes: 10  # usually 4-5 mins
@@ -137,7 +137,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - run: tools/install-minikube.sh
       - run: pip install -r requirements.txt -r examples/requirements.txt
       - run: pytest --color=yes --timeout=30 --only-e2e
